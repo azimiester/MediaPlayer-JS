@@ -1,0 +1,119 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<script type="text/javascript" src="jquery.js"></script>
+	<link rel="stylesheet" href="style.css" type="text/css" ></link>
+	<title>Video Playlist</title>
+</head>
+
+<body>
+
+	<header>
+ 	</header>
+	<center>
+	<section id="selectV">
+	<p>Select Videos to be played </p>
+	<input type='file' id="selectedFiles" multiple/>
+	<input type="button" id="proceed" value="Proceed" disabled/>
+		
+	</section>
+	<section id="VPlayer">
+	
+		<h3>Now Playing: <span id="videoName"></span></h3>
+		<video id="videoPlayer" width="960"  controls src="" ></video>		
+
+		<table>
+			<tbody id="FilesDir">
+
+			</tbody>
+		</table>
+	</section>
+	<footer>
+			
+	</footer>
+<script type="text/javascript">
+		function playVideo( filename){
+  			var video = $('#videoPlayer')[0];
+			video.src = filename;
+
+			$("videoName").html(filename);
+			video.load();
+			video.play();
+			var className = filename.replace(/[^A-Z0-9]/ig, "_");
+			$(".videos").css('background-color','#3fb8e8');
+			$(".videos").css('box-shadow','0px 3px 0px 0px #3293ba');
+			$("."+className).css('background-color','#f06060');
+			$("."+className).css('box-shadow','0px 3px 0px 0px #cd1313');
+  		}
+	$('document').ready(function(){ 
+
+		$("#VPlayer").hide();
+		var Files=Array();
+		$("input:file").change(function (){
+       		$("#proceed").prop('disabled', false);
+  		});
+  		$("#proceed").click(function(){
+			var inp = document.getElementById('selectedFiles');
+			for (var i = 0; i < inp.files.length; ++i) {
+			  var name = inp.files.item(i).name;
+			  Files.push(name);
+			}
+			$("#selectV").hide();
+			$("#VPlayer").show();
+			var tableHTML='';
+			var tableHTMLtemp='';
+			for(var i = 0 ; i < Files.length;i++) {
+				var className = Files[i].replace(/[^A-Z0-9]/ig, "_");
+				tableHTMLtemp+="<td align='center'><a href='#' class='"+className+" videos' onClick='playVideo(\""+Files[i]+"\");return false;'>"+Files[i]+"</a></td>";
+				if((i+1)%6==0)
+				{
+					tableHTML+="<tr>"+tableHTMLtemp+"</tr>";
+					tableHTMLtemp='';
+				}
+				if(i==Files.length-1)
+				{
+				tableHTML+="<tr>"+tableHTMLtemp+"</tr>";
+				}
+			}
+			$("#FilesDir").html(tableHTML);
+			var video = $('#videoPlayer')[0];
+			video.src = Files[0];
+			$("#videoName").html(Files[0]);
+			video.load();
+			video.play();
+			var className = Files[0].replace(/[^A-Z0-9]/ig, "_");
+			$(".videos").css('background-color','#3fb8e8');
+			$(".videos").css('box-shadow','0px 3px 0px 0px #3293ba');
+			$("."+className).css('background-color','#f06060');
+			$("."+className).css('box-shadow','0px 3px 0px 0px #cd1313');
+ 
+			document.getElementById('videoPlayer').addEventListener('ended',myHandler,false);
+		    function myHandler(e) {
+				var video = $('#videoPlayer')[0];
+				var curV=video.src;
+				var curV = decodeURIComponent(curV.replace(/^.*[\\\/]/, ''));
+				var nextVideo=(Files.indexOf(curV)!=Files.length-1)?Files[Files.indexOf(curV)+1]:Files[0];
+ 				video.src=nextVideo;
+				video.load();
+				video.play();
+				$("#videoName").html(nextVideo);
+				var className = nextVideo.replace(/[^A-Z0-9]/ig, "_");
+			$(".videos").css('background-color','#3fb8e8');
+			$(".videos").css('box-shadow','0px 3px 0px 0px #3293ba');
+			$("."+className).css('background-color','#f06060');
+			$("."+className).css('box-shadow','0px 3px 0px 0px #cd1313');
+
+
+		    }
+
+  		});
+  		
+	});
+</script>
+</body>
+
+</html>
+
