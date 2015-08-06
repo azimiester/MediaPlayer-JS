@@ -4,3 +4,5 @@ MediaPlayer-JS is a lightweight media solution designed to help users play local
 Required: jQuery, HTML5 supported browser
 
 created by: Syed Azeem Akhter & Peter Fernandez 
+
+need any help? Shoot an email to azmaktr@gmail.com
