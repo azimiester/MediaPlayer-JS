@@ -35,19 +35,26 @@
 			
 	</footer>
 <script type="text/javascript">
+
+		//On Click Function to Play a File Selected from the list
 		function playVideo( filename){
   			var video = $('#videoPlayer')[0];
 			video.src = filename;
-
 			$("videoName").html(filename);
 			video.load();
 			video.play();
 			var className = filename.replace(/[^A-Z0-9]/ig, "_");
+			updateCSS(className);
+  		}
+
+  		//UPDATE CSS of the file being played
+		function updateCSS(className){
 			$(".videos").css('background-color','#3fb8e8');
 			$(".videos").css('box-shadow','0px 3px 0px 0px #3293ba');
 			$("."+className).css('background-color','#f06060');
 			$("."+className).css('box-shadow','0px 3px 0px 0px #cd1313');
-  		}
+		}
+
 	$('document').ready(function(){ 
 
 		$("#VPlayer").hide();
@@ -85,12 +92,10 @@
 			video.load();
 			video.play();
 			var className = Files[0].replace(/[^A-Z0-9]/ig, "_");
-			$(".videos").css('background-color','#3fb8e8');
-			$(".videos").css('box-shadow','0px 3px 0px 0px #3293ba');
-			$("."+className).css('background-color','#f06060');
-			$("."+className).css('box-shadow','0px 3px 0px 0px #cd1313');
+			updateCSS(className); 
  
 			document.getElementById('videoPlayer').addEventListener('ended',myHandler,false);
+		    //Select next file to play one is ended
 		    function myHandler(e) {
 				var video = $('#videoPlayer')[0];
 				var curV=video.src;
@@ -101,10 +106,7 @@
 				video.play();
 				$("#videoName").html(nextVideo);
 				var className = nextVideo.replace(/[^A-Z0-9]/ig, "_");
-			$(".videos").css('background-color','#3fb8e8');
-			$(".videos").css('box-shadow','0px 3px 0px 0px #3293ba');
-			$("."+className).css('background-color','#f06060');
-			$("."+className).css('box-shadow','0px 3px 0px 0px #cd1313');
+				updateCSS(className);
 
 
 		    }
